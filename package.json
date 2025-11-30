@@ -1,7 +1,23 @@
 {
   "name": "plantgram-ui",
   "version": "0.0.0",
+  "description": "Static frontend for Plantgram (Alpine.js + Tailwind) served with a small Node static server",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "plantgram",
+    "alpinejs",
+    "tailwind",
+    "static"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0",
+    "alpinejs": "^3.10.3",
+    "tailwindcss": "^3.3.2"
   }
 }
