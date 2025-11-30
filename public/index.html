@@ -10,24 +10,45 @@
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./store/index.js"></script>
+    <style>
+        /* Brand title with flower background clipped to text */
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.5rem;
+            line-height: 1;
+            display: inline-block;
+            background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=60');
+            background-size: cover;
+            background-position: center;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-transform: none;
+            /* subtle fallback shadow */
+            text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+        }
+        /* Smooth hover for nav links */
+        .nav-link:hover { transform: translateY(-2px); }
+    </style>
 
 </head>
 
     <body class="bg-gray-50 text-gray-800">
         <div x-data x-init="$nextTick(() => { $store.ui.init(); $store.auth.verify(); })" class="min-h-screen">
-            <header class="bg-white shadow">
-                <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <h1 class="text-2xl font-bold">Plantgram</h1>
-                    <nav class="space-x-4">
-                        <a href="#/feed" class="text-sm text-gray-600">Inicio</a>
-                        <a x-show="$store.auth.token" href="#/create-post" class="text-sm text-green-600">Nueva publicación</a>
-                        <a href="#/explore" class="text-sm text-gray-600">Explorar</a>
-                        <a href="#/plant-profiles" class="text-sm text-gray-600">Perfiles de plantas</a>
-                        <a href="#/profile" class="text-sm text-gray-600">Perfil</a>
-                        <a href="#/settings" class="text-sm text-gray-600">Configuración</a>
-                        <a x-show="!$store.auth.token" href="#/signup" class="text-sm text-gray-600">Registrarse</a>
-                        <a x-show="!$store.auth.token" href="#/login" class="text-sm text-green-600">Iniciar sesión</a>
-                        <button x-show="$store.auth.token" x-on:click="$store.auth.logout()" class="text-sm text-red-500">Cerrar sesión</button>
+            <header class="bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 shadow">
+                <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+                    <h1 class="text-2xl"><span class="brand-title">Plantgram</span></h1>
+                    <nav class="space-x-4 flex items-center">
+                        <a href="#/feed" class="text-sm text-white nav-link hover:underline transition-transform">Inicio</a>
+                        <a x-show="$store.auth.token" href="#/create-post" class="text-sm text-white bg-white/20 px-3 py-1 rounded nav-link hover:bg-white/30 transition">Nueva publicación</a>
+                        <a href="#/explore" class="text-sm text-white nav-link hover:underline transition-transform">Explorar</a>
+                        <a href="#/plant-profiles" class="text-sm text-white nav-link hover:underline transition-transform">Perfiles de Plantas</a>
+                        <a href="#/profile" class="text-sm text-white nav-link hover:underline transition-transform">Mi Perfil</a>
+                        <a href="#/settings" class="text-sm text-white nav-link hover:underline transition-transform">Configuración</a>
+                        <a x-show="!$store.auth.token" href="#/signup" class="text-sm text-white nav-link hover:underline transition-transform">Registrarse</a>
+                        <a x-show="!$store.auth.token" href="#/login" class="text-sm text-white font-semibold nav-link hover:underline transition-transform">Iniciar sesión</a>
+                        <button x-show="$store.auth.token" x-on:click="$store.auth.logout()" class="text-sm text-white ml-2 bg-red-500/90 px-3 py-1 rounded hover:bg-red-600 transition">Cerrar sesión</button>
                     </nav>
                 </div>
             </header>
@@ -437,7 +458,17 @@
                 </section>
             </main>
 
-            <footer class="text-center text-xs text-gray-400 py-6">Plantgram</footer>
+            <footer class="bg-gray-900 text-white py-6">
+                <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <div class="font-semibold">Plantgram</div>
+                            <div class="text-xs text-gray-400">© 2025 Plantgram. Todos los derechos reservados.</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-400">Hecho con ♥ para amantes de las plantas</div>
+                </div>
+            </footer>
         </div>
     </body>
 
