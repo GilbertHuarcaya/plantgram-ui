@@ -204,9 +204,32 @@
                 </section>
 
                 <!-- Explore / Species Search -->
-                <section x-show="$store.ui.route === 'explore'" x-data="{ q: '' }" class="space-y-4">
+                <section x-show="$store.ui.route === 'explore'" x-data="{ q: '', showCreateSpecies: false }" class="space-y-4">
                     <h2 class="text-xl font-semibold">Explorar — Especies</h2>
                     <div class="bg-white p-4 rounded shadow">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="text-sm text-gray-600">Buscar y listar especies</div>
+                            <template x-if="$store.auth.token">
+                                <button class="bg-green-500 text-white px-3 py-1 rounded" x-on:click="showCreateSpecies = !showCreateSpecies">Nueva especie</button>
+                            </template>
+                        </div>
+
+                        <div x-show="showCreateSpecies" class="mb-4">
+                            <template x-if="$store.auth.token">
+                                <form x-on:submit.prevent="$store.species.create()" class="space-y-3">
+                                    <input x-model.trim="$store.species.form.common_name" placeholder="Nombre común" class="w-full border rounded px-3 py-2" />
+                                    <input x-model.trim="$store.species.form.scientific_name" placeholder="Nombre científico (requerido)" required class="w-full border rounded px-3 py-2" />
+                                    <input x-model.trim="$store.species.form.family" placeholder="Familia" class="w-full border rounded px-3 py-2" />
+                                    <input x-model.trim="$store.species.form.tags" placeholder="Etiquetas (separadas por comas)" class="w-full border rounded px-3 py-2" />
+                                    <div class="flex justify-end">
+                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear especie</button>
+                                    </div>
+                                </form>
+                            </template>
+                            <template x-if="!$store.auth.token">
+                                <div class="p-4 bg-yellow-50 rounded border border-yellow-100 text-sm">Debes iniciar sesión para crear especies.</div>
+                            </template>
+                        </div>
                         <div class="flex gap-2">
                             <input x-model="q" type="search" placeholder="Buscar especies" class="flex-1 border rounded px-3 py-2" />
                             <button class="bg-green-500 text-white px-4 py-2 rounded" x-on:click="$store.species.search(q)">Buscar</button>
@@ -238,11 +261,17 @@
                             <template x-if="$store.auth.user">
                                 <form x-on:submit.prevent="$store.plantProfiles.create()" class="space-y-3">
                                     <input x-model.trim="$store.plantProfiles.form.nickname" placeholder="Nombre de la planta (apodo)" required class="w-full border rounded px-3 py-2" />
-                                    <input x-model.trim="$store.plantProfiles.form.species" placeholder="Especie" required class="w-full border rounded px-3 py-2" />
+                                    <label class="text-sm text-gray-600">Especie</label>
+                                    <select x-model="$store.plantProfiles.form.species_id" class="w-full border rounded px-3 py-2" required>
+                                        <option value="">-- Seleccionar especie --</option>
+                                        <template x-for="s in $store.species.items" :key="s._id">
+                                            <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
+                                        </template>
+                                    </select>
                                     <textarea x-model="$store.plantProfiles.form.notes" placeholder="Notas" class="w-full border rounded px-3 py-2"></textarea>
                                     <input x-on:change="$store.plantProfiles.handleFile($event)" type="file" accept="image/*" />
                                     <div class="flex justify-end">
-                                        <button :disabled="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species.trim() === ''" :class="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species.trim() === '' ? 'opacity-50 cursor-not-allowed' : ''" class="bg-blue-500 text-white px-4 py-2 rounded">Crear</button>
+                                        <button :disabled="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === ''" :class="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === '' ? 'opacity-50 cursor-not-allowed' : ''" class="bg-blue-500 text-white px-4 py-2 rounded">Crear</button>
                                     </div>
                                 </form>
                             </template>

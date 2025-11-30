@@ -128,6 +128,13 @@ document.addEventListener('alpine:init', () => {
                 }, 150);
             });
             loadRoute();
+            // Ensure common lists are loaded at app start so dropdowns are populated
+            const speciesStore = Alpine.store('species');
+            if (speciesStore && typeof speciesStore.loadAll === 'function') speciesStore.loadAll();
+            else setTimeout(() => { const s = Alpine.store('species'); if (s && typeof s.loadAll === 'function') s.loadAll(); }, 200);
+            const ppStore = Alpine.store('plantProfiles');
+            if (ppStore && typeof ppStore.load === 'function') ppStore.load();
+            else setTimeout(() => { const p = Alpine.store('plantProfiles'); if (p && typeof p.load === 'function') p.load(); }, 200);
         }
         ,
         // expose resolver so templates can call $store.ui.resolveImage(...)
@@ -457,6 +464,7 @@ document.addEventListener('alpine:init', () => {
     // Species / Explore store
     Alpine.store('species', {
         items: [],
+        form: { common_name: '', scientific_name: '', family: '', tags: '' },
         current: null,
         async search(q) {
             try {
@@ -485,13 +493,32 @@ document.addEventListener('alpine:init', () => {
                 this.current = data;
             } catch (err) { console.error('species getById', err); }
         }
+        ,
+        async create() {
+            try {
+                const token = Alpine.store('auth').token;
+                const payload = Object.assign({}, this.form);
+                // normalize tags from comma-separated string to array
+                if (payload.tags && typeof payload.tags === 'string') payload.tags = payload.tags.split(',').map(t => t.trim()).filter(Boolean);
+                const res = await fetch(API_URL + '/api/species', {
+                    method: 'POST',
+                    headers: Object.assign({'Content-Type': 'application/json'}, token ? { 'Authorization': 'Bearer ' + token } : {}),
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Create species failed');
+                this.items.unshift(data);
+                this.form = { common_name: '', scientific_name: '', family: '', tags: '' };
+                alert('Especie creada');
+            } catch (err) { alert(err.message || 'Error creando especie'); }
+        }
     })
 
     // Plant Profiles store
     Alpine.store('plantProfiles', {
         items: [],
         showCreate: false,
-        form: { nickname: '', species: '', notes: '', file: null },
+        form: { nickname: '', species: '', species_id: '', notes: '', file: null },
         current: null,
         handleFile(e) {
             this.form.file = e.target.files[0];
@@ -531,9 +558,16 @@ document.addEventListener('alpine:init', () => {
                     if (!up.ok) throw new Error(upData.error || 'Upload failed');
                     imageUrl = upData.imageUrl || upData.image_url || `/uploads/${upData.filename}`;
                 }
+                // if a species_id is selected, try to fill species text for readability
+                let speciesText = this.form.species || '';
+                if (!speciesText && this.form.species_id) {
+                    const s = Alpine.store('species').items.find(x => String(x._id) === String(this.form.species_id));
+                    if (s) speciesText = s.common_name || s.scientific_name || '';
+                }
                 const body = {
                     nickname: this.form.nickname || this.form.name,
-                    species: this.form.species,
+                    species: speciesText,
+                    species_id: this.form.species_id || null,
                     notes: this.form.notes,
                     profile_pic: imageUrl,
                     user_id: currentUser._id
@@ -550,7 +584,7 @@ document.addEventListener('alpine:init', () => {
                     if (data.user_id && data.user_id.profile_pic) data.user_id.profile_pic = resolveImage(data.user_id.profile_pic);
                 }
                 this.items.unshift(data);
-                this.form = { nickname: '', species: '', notes: '', file: null };
+                this.form = { nickname: '', species: '', species_id: '', notes: '', file: null };
                 this.showCreate = false;
             } catch (err) { alert(err.message || 'Error creating plant profile'); }
         },
