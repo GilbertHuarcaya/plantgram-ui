@@ -212,7 +212,9 @@
                             <h3 class="font-medium">Posts</h3>
                             <div class="grid grid-cols-3 gap-2 mt-2">
                                 <template x-for="p in $store.profile.posts" :key="p._id">
-                                    <img :src="$store.ui.resolveImage(p.image_url)" class="w-full h-24 object-cover rounded" />
+                                    <a :href="`#/posts/${p._id}`">
+                                        <img :src="$store.ui.resolveImage(p.image_url)" class="w-full h-24 object-cover rounded" />
+                                    </a>
                                 </template>
                             </div>
                         </div>
@@ -315,16 +317,16 @@
                         <div class="grid grid-cols-1 gap-3">
                             <template x-for="p in $store.plantProfiles.items" :key="p._id">
                                 <div class="p-3 border rounded flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                            <img :src="$store.ui.resolveImage(p.profile_pic || p.image_url || p.image)" class="w-14 h-14 object-cover rounded" />
-                                            <div>
-                                                <div class="font-semibold" x-text="p.nickname || p.name || ''"></div>
-                                                <div class="text-sm text-gray-500" x-text="p.species || ''"></div>
-                                            </div>
+                                    <a :href="`#/plant-profile/${p._id}`" class="flex items-center gap-3">
+                                        <img :src="$store.ui.resolveImage(p.profile_pic || p.image_url || p.image)" class="w-14 h-14 object-cover rounded" />
+                                        <div>
+                                            <div class="font-semibold" x-text="p.nickname || p.name || ''"></div>
+                                            <div class="text-sm text-gray-500" x-text="p.species || ''"></div>
                                         </div>
+                                    </a>
                                     <div class="flex items-center gap-2">
-                                                <button class="text-blue-500" x-on:click="$store.plantProfiles.getById(p._id); $store.ui.route='plant-profile'">Ver</button>
-                                                <button x-show="$store.auth.user && (p.user_id && (p.user_id._id ? p.user_id._id : p.user_id) === $store.auth.user._id)" class="text-red-500" x-on:click="$store.plantProfiles.remove(p._id)">Eliminar</button>
+                                        <a :href="`#/plant-profile/${p._id}`" class="text-blue-500">Ver</a>
+                                        <button x-show="$store.auth.user && (p.user_id && (p.user_id._id ? p.user_id._id : p.user_id) === $store.auth.user._id)" class="text-red-500" x-on:click="$store.plantProfiles.remove(p._id)">Eliminar</button>
                                     </div>
                                 </div>
                             </template>
