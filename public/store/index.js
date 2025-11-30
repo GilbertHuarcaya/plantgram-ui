@@ -23,7 +23,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('ui', {
         route: 'login',
         init() {
-            const loadRoute = () => {
+            const loadRoute = async () => {
                 // Prefer hash-based routing, fall back to pathname so direct links like /plant-profiles work.
                 let routeStr = '';
                 if (location.hash && location.hash.length > 0) {
@@ -71,7 +71,7 @@ document.addEventListener('alpine:init', () => {
                     if (profileStore && typeof profileStore.load === 'function') {
                         profileStore.load(user._id);
                         // also load saved posts for the profile view
-                        const savesStore = Alpine.store('saves');
+                    const savesStore = Alpine.store('saves');
                         if (savesStore && typeof savesStore.load === 'function') savesStore.load();
                     } else {
                         setTimeout(() => {
@@ -180,6 +180,8 @@ document.addEventListener('alpine:init', () => {
                 if (this.user && this.user.profile_pic) this.user.profile_pic = resolveImage(this.user.profile_pic);
                 localStorage.setItem('plantgram_token', data.token)
                 localStorage.setItem('plantgram_user', JSON.stringify(data.user))
+                // ensure router and URL are in sync — set hash so ui.init() reacts if needed
+                location.hash = '#/feed'
                 Alpine.store('ui').route = 'feed'
                 return true
             } catch (err) {
@@ -202,6 +204,8 @@ document.addEventListener('alpine:init', () => {
                 if (this.user && this.user.profile_pic) this.user.profile_pic = resolveImage(this.user.profile_pic);
                 localStorage.setItem('plantgram_token', data.token)
                 localStorage.setItem('plantgram_user', JSON.stringify(data.user))
+                // navigate to feed after signup
+                location.hash = '#/feed'
                 Alpine.store('ui').route = 'feed'
                 return true
             } catch (err) {
@@ -247,6 +251,8 @@ document.addEventListener('alpine:init', () => {
             this.user = null
             localStorage.removeItem('plantgram_token')
             localStorage.removeItem('plantgram_user')
+            // clear route and sync URL
+            location.hash = '#/login'
             Alpine.store('ui').route = 'login'
         },
         async updateProfile(fields, file) {

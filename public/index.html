@@ -26,496 +26,666 @@
             -webkit-text-fill-color: transparent;
             text-transform: none;
             /* subtle fallback shadow */
-            text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
         }
+
         /* Smooth hover for nav links */
-        .nav-link:hover { transform: translateY(-2px); }
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
     </style>
 
 </head>
 
-    <body class="bg-gray-50 text-gray-800">
-        <div x-data x-init="$nextTick(() => { $store.ui.init(); $store.auth.verify(); })" class="min-h-screen flex flex-col">
-                <header x-data="{ open: false }" class="relative bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 shadow">
-                <div class="max-w-screen-xl mx-auto px-4 py-4 flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <button class="md:hidden text-white p-2 rounded-md focus:outline-none" x-on:click="open = !open" aria-label="Toggle menu">
-                            <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                            <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                        <h1 class="text-2xl"><span class="brand-title">Plantgram</span></h1>
-                    </div>
-
-                    <!-- Desktop nav -->
-                    <nav class="hidden md:flex space-x-4 items-center">
-                        <a href="#/feed" class="text-sm text-white nav-link hover:underline transition-transform">Inicio</a>
-                        <a x-show="$store.auth.token" href="#/create-post" class="text-sm text-white bg-white/20 px-3 py-1 rounded nav-link hover:bg-white/30 transition">Nueva publicación</a>
-                        <a href="#/explore" class="text-sm text-white nav-link hover:underline transition-transform">Explorar</a>
-                        <a href="#/plant-profiles" class="text-sm text-white nav-link hover:underline transition-transform">Perfiles de Plantas</a>
-                        <a href="#/profile" class="text-sm text-white nav-link hover:underline transition-transform">Mi Perfil</a>
-                        <a href="#/settings" class="text-sm text-white nav-link hover:underline transition-transform">Configuración</a>
-                        <a x-show="!$store.auth.token" href="#/signup" class="text-sm text-white nav-link hover:underline transition-transform">Registrarse</a>
-                        <a x-show="!$store.auth.token" href="#/login" class="text-sm text-white font-semibold nav-link hover:underline transition-transform">Iniciar sesión</a>
-                        <button x-show="$store.auth.token" x-on:click="$store.auth.logout()" class="text-sm text-white ml-2 bg-red-500/90 px-3 py-1 rounded hover:bg-red-600 transition">Cerrar sesión</button>
-                    </nav>
-
-                    <!-- Mobile menu (absolute dropdown positioned under header) -->
-                    <div x-cloak x-show="open" x-transition class="md:hidden absolute left-0 right-0 top-full bg-gradient-to-b from-purple-500 via-blue-500 to-green-400 shadow-lg z-40">
-                        <div class="max-w-screen-xl mx-auto px-4 py-3 flex flex-col gap-2">
-                            <a href="#/feed" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Inicio</a>
-                            <a x-show="$store.auth.token" href="#/create-post" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Nueva publicación</a>
-                            <a href="#/explore" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Explorar</a>
-                            <a href="#/plant-profiles" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Perfiles de Plantas</a>
-                            <a href="#/profile" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Mi Perfil</a>
-                            <a href="#/settings" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Configuración</a>
-                            <a x-show="!$store.auth.token" href="#/signup" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Registrarse</a>
-                            <a x-show="!$store.auth.token" href="#/login" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Iniciar sesión</a>
-                            <button x-show="$store.auth.token" x-on:click="$store.auth.logout(); open = false" class="text-white py-2 text-left">Cerrar sesión</button>
-                        </div>
-                    </div>
+<body class="bg-gray-50 text-gray-800">
+    <div x-data x-init="$nextTick(() => { $store.ui.init(); $store.auth.verify(); })"
+        class="min-h-screen flex flex-col">
+        <header x-data="{ open: false }"
+            class="relative bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 shadow">
+            <div class="max-w-screen-xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-white p-2 rounded-md focus:outline-none" x-on:click="open = !open"
+                        aria-label="Toggle menu">
+                        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <h1 class="text-2xl"><a href="#/feed" class="brand-title">Plantgram</a></h1>
                 </div>
-            </header>
 
-            <main class="max-w-screen-xl mx-auto px-4 py-6 flex-1">
-                <!-- Login Screen -->
-                <section x-show="$store.ui.route === 'login'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Iniciar sesión</h2>
-                    <div class="bg-white p-6 rounded shadow">
-                        <form x-on:submit.prevent="$store.auth.login()" class="space-y-4">
-                            <input x-model="$store.auth.loginForm.email" type="email" placeholder="Correo"
-                                class="w-full border rounded px-3 py-2" />
-                            <input x-model="$store.auth.loginForm.password" type="password" placeholder="Contraseña"
-                                class="w-full border rounded px-3 py-2" />
-                            <div class="flex justify-between items-center">
-                                <a href="#/signup" class="text-sm text-blue-500">Crear cuenta</a>
-                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Iniciar sesión</button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
+                <!-- Desktop nav -->
+                <nav class="hidden md:flex space-x-4 items-center">
+                    <a href="#/feed" class="text-sm text-white nav-link hover:underline transition-transform">Inicio</a>
+                    <a x-show="$store.auth.token" href="#/create-post"
+                        class="text-sm text-white bg-white/20 px-3 py-1 rounded nav-link hover:bg-white/30 transition">Nueva
+                        publicación</a>
+                    <a href="#/explore"
+                        class="text-sm text-white nav-link hover:underline transition-transform">Explorar</a>
+                    <a href="#/plant-profiles"
+                        class="text-sm text-white nav-link hover:underline transition-transform">Perfiles de Plantas</a>
+                    <a href="#/profile" class="text-sm text-white nav-link hover:underline transition-transform"
+                        x-show="$store.auth.token">Mi Perfil</a>
+                    <a href="#/settings" class="text-sm text-white nav-link hover:underline transition-transform"
+                        x-show="$store.auth.token">Configuración</a>
+                    <a x-show="!$store.auth.token" href="#/signup"
+                        class="text-sm text-white nav-link hover:underline transition-transform">Registrarse</a>
+                    <a x-show="!$store.auth.token" href="#/login"
+                        class="text-sm text-white font-semibold nav-link hover:underline transition-transform">Iniciar
+                        sesión</a>
+                    <button x-show="$store.auth.token" x-on:click="$store.auth.logout()"
+                        class="text-sm text-white ml-2 bg-red-500/90 px-3 py-1 rounded hover:bg-red-600 transition">Cerrar
+                        sesión</button>
+                </nav>
+            </div>
 
-                <!-- Species Detail Screen -->
-                <section x-show="$store.ui.route === 'species'" class="space-y-4">
-                    <template x-if="$store.species.current">
-                        <div class="bg-white p-4 rounded shadow">
-                            <h2 class="text-2xl font-bold" x-text="$store.species.current.common_name || $store.species.current.scientific_name"></h2>
-                            <div class="text-sm text-gray-500" x-text="$store.species.current.scientific_name"></div>
-                            <div class="mt-2 text-sm text-gray-600" x-text="'Family: ' + ($store.species.current.family || '-')"></div>
-                            <div class="mt-3">
-                                <div class="font-medium">Tags</div>
-                                <div class="flex gap-2 mt-2">
-                                    <template x-for="t in ($store.species.current.tags || [])" :key="t">
-                                        <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
-                                    </template>
-                                </div>
-                            </div>
+            <!-- Mobile menu (absolute dropdown positioned under header) -->
+            <div x-cloak x-show="open" x-transition
+                class="md:hidden absolute left-0 right-0 top-full bg-gradient-to-b from-purple-500 via-blue-500 to-green-400 shadow-lg z-40">
+                <div class="max-w-screen-xl mx-auto px-4 py-3 flex flex-col gap-2">
+                    <a href="#/feed" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Inicio</a>
+                    <a x-show="$store.auth.token" href="#/create-post" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Nueva publicación</a>
+                    <a href="#/explore" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Explorar</a>
+                    <a href="#/plant-profiles" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Perfiles de Plantas</a>
+                    <a href="#/profile" class="text-white py-2 border-b border-white/10" x-on:click="open = false"
+                        x-show="$store.auth.token">Mi Perfil</a>
+                    <a href="#/settings" class="text-white py-2 border-b border-white/10" x-on:click="open = false"
+                        x-show="$store.auth.token">Configuración</a>
+                    <a x-show="!$store.auth.token" href="#/signup" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Registrarse</a>
+                    <a x-show="!$store.auth.token" href="#/login" class="text-white py-2 border-b border-white/10"
+                        x-on:click="open = false">Iniciar sesión</a>
+                    <button x-show="$store.auth.token" x-on:click="$store.auth.logout(); open = false"
+                        class="text-white py-2 text-left">Cerrar sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-screen-xl mx-auto px-4 py-6 flex-1">
+            <!-- Login Screen -->
+            <section x-show="$store.ui.route === 'login'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Iniciar sesión</h2>
+                <div class="bg-white p-6 rounded shadow">
+                    <form x-on:submit.prevent="$store.auth.login()" class="space-y-4">
+                        <input x-model="$store.auth.loginForm.email" type="email" placeholder="Correo"
+                            class="w-full border rounded px-3 py-2" />
+                        <input x-model="$store.auth.loginForm.password" type="password" placeholder="Contraseña"
+                            class="w-full border rounded px-3 py-2" />
+                        <div class="flex justify-between items-center">
+                            <a href="#/signup" class="text-sm text-blue-500">Crear cuenta</a>
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Iniciar
+                                sesión</button>
                         </div>
-                    </template>
-                </section>
+                    </form>
+                </div>
+            </section>
 
-                <!-- Signup Screen -->
-                <section x-show="$store.ui.route === 'signup'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Registrarse</h2>
-                    <div class="bg-white p-6 rounded shadow">
-                        <form x-on:submit.prevent="$store.auth.signup()" class="space-y-4">
-                            <input x-model="$store.auth.signupForm.username" type="text" placeholder="Nombre de usuario"
-                                class="w-full border rounded px-3 py-2" />
-                            <input x-model="$store.auth.signupForm.email" type="email" placeholder="Correo"
-                                class="w-full border rounded px-3 py-2" />
-                            <input x-model="$store.auth.signupForm.password" type="password" placeholder="Contraseña"
-                                class="w-full border rounded px-3 py-2" />
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear cuenta</button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- Feed Screen -->
-                <section x-show="$store.ui.route === 'feed'">
-                    <h2 class="text-xl font-semibold mb-4">Inicio</h2>
-                    <div x-text="`Cargando publicaciones...`" x-show="$store.posts.loading"></div>
-                    <template x-for="post in $store.posts.items" :key="post._id">
-                        <article class="bg-white mb-4 rounded shadow overflow-hidden">
-                            <a :href="`#/posts/${post._id}`">
-                                <img :src="$store.ui.resolveImage(post.image_url)" alt="imagen de la publicación" class="w-full h-64 object-cover">
-                            </a>
-                            <div class="p-4">
-                                <div class="flex items-center space-x-3">
-                                    <img :src="$store.ui.resolveImage(post.user_id?.profile_pic)" class="w-10 h-10 rounded-full" />
-                                    <div>
-                                        <div class="font-semibold" x-text="post.user_id.username"></div>
-                                        <div class="text-sm text-gray-500" x-text="post.species_id?.common_name || ''"></div>
-                                    </div>
-                                </div>
-                                <h3 class="mt-3 text-lg font-semibold" x-text="post.title"></h3>
-                                <p class="mt-2 text-gray-700" x-text="post.description"></p>
-                                <div class="mt-3">
-                                    <template x-if="(post.tags && post.tags.length > 0)">
-                                        <div class="flex flex-wrap gap-2">
-                                            <template x-for="t in (post.tags || [])" :key="t">
-                                                <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
-                                            </template>
-                                        </div>
-                                    </template>
-                                </div>
-                                <div class="mt-3 flex items-center space-x-2">
-                                    <button class="text-green-500 flex items-center gap-2" x-on:click="$store.posts.like(post._id)">
-                                        <span x-text="post._liked ? 'Te gusta' : 'Me gusta'"></span>
-                                        <span class="text-sm text-gray-600" x-text="post.likes_count || 0"></span>
-                                    </button>
-                                    <a :href="`#/posts/${post._id}`" class="text-blue-500">Comentarios (<span x-text="post.comments_count || 0"></span>)</a>
-                                    <button class="text-gray-600 flex items-center gap-2" x-on:click="$store.saves.toggleSave(post._id)">
-                                        <span x-text="post._saved ? 'Guardado' : 'Guardar'"></span>
-                                        <span class="text-sm text-gray-600" x-text="post.saves_count || 0"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    </template>
-                </section>
-
-                <!-- Create Post Screen -->
-                <section x-show="$store.ui.route === 'create-post'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Crear publicación</h2>
-                    <div class="bg-white p-6 rounded shadow">
-                        <form x-on:submit.prevent="$store.posts.createPost()" class="space-y-4">
-                            <input x-model="$store.posts.createForm.title" type="text" placeholder="Título"
-                                class="w-full border rounded px-3 py-2" />
-                            <textarea x-model="$store.posts.createForm.description" placeholder="Descripción" class="w-full border rounded px-3 py-2"></textarea>
-                            <label class="text-sm text-gray-600">Asociar perfil de planta (opcional)</label>
-                            <select x-model="$store.posts.createForm.plant_profile_id" class="w-full border rounded px-3 py-2">
-                                <option value="">Ninguno</option>
-                                <template x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))" :key="pf._id">
-                                    <option :value="pf._id" x-text="pf.nickname + ' - Especie: ' + (pf.species || '')"></option>
-                                </template>
-                            </select>
-                            <label class="text-sm text-gray-600">Asociar especie (opcional)</label>
-                            <select x-model="$store.posts.createForm.species_id" class="w-full border rounded px-3 py-2">
-                                <option value="">Ninguno</option>
-                                <template x-for="s in $store.species.items" :key="s._id">
-                                    <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
-                                </template>
-                            </select>
-                            <label class="text-sm text-gray-600">Etiquetas (separadas por comas)</label>
-                            <input x-model="$store.posts.createForm.tags" type="text" placeholder="ej. interior, poca-luz" class="w-full border rounded px-3 py-2" />
-                            <input x-ref="imageInput" x-on:change="$store.posts.handleFile($event)" type="file" accept="image/*"
-                                class="w-full" />
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Publicar</button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- Post Detail Screen -->
-                <section x-show="$store.ui.route === 'post'" class="space-y-4">
-                    <template x-if="$store.posts.current">
-                        <div class="bg-white p-4 rounded shadow">
-                            <img :src="$store.ui.resolveImage($store.posts.current.image_url)" class="w-full h-96 object-cover" />
-                            <div class="mt-4">
-                                <h2 class="text-2xl font-bold" x-text="$store.posts.current.title"></h2>
-                                <p class="mt-2 text-gray-700" x-text="$store.posts.current.description"></p>
-                                <div class="mt-3">
-                                    <template x-if="($store.posts.current.tags && $store.posts.current.tags.length > 0)">
-                                        <div class="flex flex-wrap gap-2">
-                                            <template x-for="t in ($store.posts.current.tags || [])" :key="t">
-                                                <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
-                                            </template>
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <div class="mt-4">
-                                    <h4 class="font-medium">Comentarios</h4>
-                                    <template x-for="c in $store.comments.items" :key="c._id">
-                                        <div class="border-t py-2" x-text="`${c.user.username}: ${c.text}`"></div>
-                                    </template>
-                                    <form class="mt-3 flex" x-on:submit.prevent="$store.comments.add($store.posts.current._id)">
-                                        <input x-model="$store.comments.form.text" class="flex-1 border rounded px-2 py-1" placeholder="Escribe un comentario" />
-                                        <button class="ml-2 bg-blue-500 text-white px-3 rounded">Enviar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </section>
-
-                <!-- Profile Screen -->
-                <section x-show="$store.ui.route === 'profile'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Perfil</h2>
+            <!-- Species Detail Screen -->
+            <section x-show="$store.ui.route === 'species'" class="space-y-4">
+                <template x-if="$store.species.current">
                     <div class="bg-white p-4 rounded shadow">
-                        <div class="flex items-center space-x-4">
-                            <img :src="$store.ui.resolveImage($store.auth.user?.profile_pic)" class="w-20 h-20 rounded-full" />
-                            <div>
-                                <div class="font-bold" x-text="$store.auth.user?.username"></div>
-                                <div class="text-sm text-gray-600" x-text="$store.auth.user?.email"></div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h3 class="font-medium">Posts</h3>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-2">
-                                <template x-for="p in $store.profile.posts" :key="p._id">
-                                    <div>
-                                        <a :href="`#/posts/${p._id}`" class="block">
-                                            <img :src="$store.ui.resolveImage(p.image_url)" class="w-full h-24 object-cover rounded" />
-                                        </a>
-                                        <div class="flex items-center justify-between text-xs text-gray-600 mt-1">
-                                            <div class="flex items-center gap-2">
-                                                <span>👍 <span x-text="p.likes_count || 0"></span></span>
-                                                <span>💬 <span x-text="p.comments_count || 0"></span></span>
-                                                <span>🔖 <span x-text="p.saves_count || 0"></span></span>
-                                            </div>
-                                            <a :href="`#/posts/${p._id}`" class="text-blue-500">Ver</a>
-                                        </div>
-                                    </div>
+                        <h2 class="text-2xl font-bold"
+                            x-text="$store.species.current.common_name || $store.species.current.scientific_name"></h2>
+                        <div class="text-sm text-gray-500" x-text="$store.species.current.scientific_name"></div>
+                        <div class="mt-2 text-sm text-gray-600"
+                            x-text="'Family: ' + ($store.species.current.family || '-')"></div>
+                        <div class="mt-3">
+                            <div class="font-medium">Tags</div>
+                            <div class="flex gap-2 mt-2">
+                                <template x-for="t in ($store.species.current.tags || [])" :key="t">
+                                    <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
                                 </template>
                             </div>
                         </div>
+                    </div>
+                </template>
+            </section>
 
-                        <div class="mt-6">
-                            <h3 class="font-medium">Mis guardados</h3>
-                            <div class="bg-white mt-2">
-                                <template x-if="$store.saves.items && $store.saves.items.length > 0">
-                                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                                        <template x-for="s in $store.saves.items" :key="s._id">
-                                            <a :href="`#/posts/${(s.post_id && (s.post_id._id || s.post_id)) || (s.post && s.post._id)}`" class="block">
-                                                <img :src="$store.ui.resolveImage((s.post_id && (s.post_id.image_url || s.post_id.image)) || (s.post && (s.post.image_url || s.post.image)))" class="w-full h-24 object-cover rounded" />
-                                            </a>
+            <!-- Signup Screen -->
+            <section x-show="$store.ui.route === 'signup'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Registrarse</h2>
+                <div class="bg-white p-6 rounded shadow">
+                    <form x-on:submit.prevent="$store.auth.signup()" class="space-y-4">
+                        <input x-model="$store.auth.signupForm.username" type="text" placeholder="Nombre de usuario"
+                            class="w-full border rounded px-3 py-2" />
+                        <input x-model="$store.auth.signupForm.email" type="email" placeholder="Correo"
+                            class="w-full border rounded px-3 py-2" />
+                        <input x-model="$store.auth.signupForm.password" type="password" placeholder="Contraseña"
+                            class="w-full border rounded px-3 py-2" />
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear cuenta</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Feed Screen -->
+            <section x-show="$store.ui.route === 'feed'">
+                <h2 class="text-xl font-semibold mb-4">Inicio</h2>
+                <div x-text="`Cargando publicaciones...`" x-show="$store.posts.loading"></div>
+                <template x-for="post in $store.posts.items" :key="post._id">
+                    <article class="bg-white mb-4 rounded shadow overflow-hidden">
+                        <a :href="`#/posts/${post._id}`">
+                            <img :src="$store.ui.resolveImage(post.image_url)" alt="imagen de la publicación"
+                                class="w-full h-64 object-cover">
+                        </a>
+                        <div class="p-4">
+                            <div class="flex items-center space-x-3">
+                                <img :src="$store.ui.resolveImage(post.user_id?.profile_pic)"
+                                    class="w-10 h-10 rounded-full" />
+                                <div>
+                                    <div class="font-semibold" x-text="post.user_id.username"></div>
+                                    <div class="text-sm text-gray-500" x-text="post.species_id?.common_name || ''">
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="mt-3 text-lg font-semibold" x-text="post.title"></h3>
+                            <p class="mt-2 text-gray-700" x-text="post.description"></p>
+                            <div class="mt-3">
+                                <template x-if="(post.tags && post.tags.length > 0)">
+                                    <div class="flex flex-wrap gap-2">
+                                        <template x-for="t in (post.tags || [])" :key="t">
+                                            <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
                                         </template>
                                     </div>
                                 </template>
-                                <div x-show="!($store.saves.items && $store.saves.items.length > 0)" class="text-sm text-gray-500 p-3">No tienes guardados.</div>
+                            </div>
+                            <div class="mt-3 flex items-center space-x-2">
+                                <button class="text-green-500 flex items-center gap-2"
+                                    x-on:click="$store.posts.like(post._id)">
+                                    <span x-text="post._liked ? 'Te gusta' : 'Me gusta'"></span>
+                                    <span class="text-sm text-gray-600" x-text="post.likes_count || 0"></span>
+                                </button>
+                                <a :href="`#/posts/${post._id}`" class="text-blue-500">Comentarios (<span
+                                        x-text="post.comments_count || 0"></span>)</a>
+                                <button class="text-gray-600 flex items-center gap-2"
+                                    x-on:click="$store.saves.toggleSave(post._id)">
+                                    <span x-text="post._saved ? 'Guardado' : 'Guardar'"></span>
+                                    <span class="text-sm text-gray-600" x-text="post.saves_count || 0"></span>
+                                </button>
                             </div>
                         </div>
-                        <div class="mt-6">
-                            <h3 class="font-medium">Mis perfiles de plantas</h3>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-2">
-                                <template x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))" :key="pf._id">
-                                    <a :href="`#/plant-profile/${pf._id}`" class="block text-center">
-                                        <img :src="$store.ui.resolveImage(pf.profile_pic || pf.image_url || pf.image)" class="w-full h-24 object-cover rounded" />
-                                        <div class="text-sm mt-1" x-text="pf.nickname"></div>
-                                    </a>
+                    </article>
+                </template>
+            </section>
+
+            <!-- Create Post Screen -->
+            <section x-show="$store.ui.route === 'create-post'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Crear publicación</h2>
+                <div class="bg-white p-6 rounded shadow">
+                    <form x-on:submit.prevent="$store.posts.createPost()" class="space-y-4">
+                        <input x-model="$store.posts.createForm.title" type="text" placeholder="Título"
+                            class="w-full border rounded px-3 py-2" />
+                        <textarea x-model="$store.posts.createForm.description" placeholder="Descripción"
+                            class="w-full border rounded px-3 py-2"></textarea>
+                        <label class="text-sm text-gray-600">Asociar perfil de planta (opcional)</label>
+                        <select x-model="$store.posts.createForm.plant_profile_id"
+                            class="w-full border rounded px-3 py-2">
+                            <option value="">Ninguno</option>
+                            <template
+                                x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))"
+                                :key="pf._id">
+                                <option :value="pf._id" x-text="pf.nickname + ' - Especie: ' + (pf.species || '')">
+                                </option>
+                            </template>
+                        </select>
+                        <label class="text-sm text-gray-600">Asociar especie (opcional)</label>
+                        <select x-model="$store.posts.createForm.species_id" class="w-full border rounded px-3 py-2">
+                            <option value="">Ninguno</option>
+                            <template x-for="s in $store.species.items" :key="s._id">
+                                <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
+                            </template>
+                        </select>
+                        <label class="text-sm text-gray-600">Etiquetas (separadas por comas)</label>
+                        <input x-model="$store.posts.createForm.tags" type="text" placeholder="ej. interior, poca-luz"
+                            class="w-full border rounded px-3 py-2" />
+                        <input x-ref="imageInput" x-on:change="$store.posts.handleFile($event)" type="file"
+                            accept="image/*" class="w-full" />
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Publicar</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Post Detail Screen -->
+            <section x-show="$store.ui.route === 'post'" class="space-y-4">
+                <template x-if="$store.posts.current">
+                    <div class="bg-white p-4 rounded shadow">
+                        <img :src="$store.ui.resolveImage($store.posts.current.image_url)"
+                            class="w-full h-96 object-cover" />
+                        <div class="mt-4">
+                            <h2 class="text-2xl font-bold" x-text="$store.posts.current.title"></h2>
+                            <p class="mt-2 text-gray-700" x-text="$store.posts.current.description"></p>
+                            <div class="mt-3">
+                                <template x-if="($store.posts.current.tags && $store.posts.current.tags.length > 0)">
+                                    <div class="flex flex-wrap gap-2">
+                                        <template x-for="t in ($store.posts.current.tags || [])" :key="t">
+                                            <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="t"></span>
+                                        </template>
+                                    </div>
                                 </template>
-                                <div x-show="($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id))).length === 0" class="text-sm text-gray-500">
-                                    No tienes perfiles de plantas. <a href="#/plant-profiles" class="text-blue-600 underline">Crear uno</a>
-                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h4 class="font-medium">Comentarios</h4>
+                                <template x-for="c in $store.comments.items" :key="c._id">
+                                    <div class="border-t py-2" x-text="`${c.user.username}: ${c.text}`"></div>
+                                </template>
+                                <form class="mt-3 flex"
+                                    x-on:submit.prevent="$store.comments.add($store.posts.current._id)">
+                                    <input x-model="$store.comments.form.text" class="flex-1 border rounded px-2 py-1"
+                                        placeholder="Escribe un comentario" />
+                                    <button class="ml-2 bg-blue-500 text-white px-3 rounded">Enviar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </section>
+                </template>
+            </section>
 
-                <!-- Explore / Species Search -->
-                <section x-show="$store.ui.route === 'explore'" x-data="{ q: '', showCreateSpecies: false }" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Explorar Especies</h2>
-                    <div class="bg-white p-4 rounded shadow">
-                        <div class="flex justify-between items-center mb-3">
-                            <div class="text-sm text-gray-600">Buscar y listar especies</div>
-                            <template x-if="$store.auth.token">
-                                <button class="bg-green-500 text-white px-3 py-1 rounded" x-on:click="showCreateSpecies = !showCreateSpecies">Nueva especie</button>
-                            </template>
+            <!-- Profile Screen -->
+            <section x-show="$store.ui.route === 'profile'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Perfil</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <div class="md:grid md:grid-cols-3 md:gap-6">
+                        <!-- Left: profile & posts -->
+                        <div class="md:col-span-2">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <img :src="$store.ui.resolveImage($store.auth.user?.profile_pic)"
+                                    class="w-24 h-24 rounded-full object-cover" />
+                                <div>
+                                    <div class="font-bold text-lg" x-text="$store.auth.user?.username"></div>
+                                    <div class="text-sm text-gray-600" x-text="$store.auth.user?.email"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-medium">Posts</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-3">
+                                    <template x-for="p in $store.profile.posts" :key="p._id">
+                                        <div class="group">
+                                            <a :href="`#/posts/${p._id}`" class="block overflow-hidden rounded">
+                                                <img :src="$store.ui.resolveImage(p.image_url)"
+                                                    class="w-full h-36 object-cover group-hover:scale-105 transition-transform" />
+                                            </a>
+                                            <div class="flex items-center justify-between text-xs text-gray-600 mt-1">
+                                                <div class="flex items-center gap-2">
+                                                    <span>👍 <span x-text="p.likes_count || 0"></span></span>
+                                                    <span>💬 <span x-text="p.comments_count || 0"></span></span>
+                                                    <span>🔖 <span x-text="p.saves_count || 0"></span></span>
+                                                </div>
+                                                <a :href="`#/posts/${p._id}`" class="text-blue-500">Ver</a>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
                         </div>
 
-                        <div x-show="showCreateSpecies" class="mb-4">
-                            <template x-if="$store.auth.token">
-                                <form x-on:submit.prevent="$store.species.create()" class="space-y-3">
-                                    <input x-model.trim="$store.species.form.common_name" placeholder="Nombre común" class="w-full border rounded px-3 py-2" />
-                                    <input x-model.trim="$store.species.form.scientific_name" placeholder="Nombre científico (requerido)" required class="w-full border rounded px-3 py-2" />
-                                    <input x-model.trim="$store.species.form.family" placeholder="Familia" class="w-full border rounded px-3 py-2" />
-                                    <input x-model.trim="$store.species.form.tags" placeholder="Etiquetas (separadas por comas)" class="w-full border rounded px-3 py-2" />
-                                    <div class="flex justify-end">
-                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear especie</button>
+                        <!-- Right: saves + plant profiles -->
+                        <aside class="md:col-span-1 space-y-4">
+                            <div>
+                                <h4 class="font-medium">Mis guardados</h4>
+                                <div class="bg-white mt-2">
+                                    <template x-if="$store.saves.items && $store.saves.items.length > 0">
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <template x-for="s in $store.saves.items" :key="s._id">
+                                                <a :href="`#/posts/${(s.post_id && (s.post_id._id || s.post_id)) || (s.post && s.post._id)}`"
+                                                    class="block">
+                                                    <img :src="$store.ui.resolveImage((s.post_id && (s.post_id.image_url || s.post_id.image)) || (s.post && (s.post.image_url || s.post.image)))"
+                                                        class="w-full h-20 object-cover rounded" />
+                                                </a>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <div x-show="!($store.saves.items && $store.saves.items.length > 0)"
+                                        class="text-sm text-gray-500 p-3">No tienes guardados.</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium">Mis perfiles de plantas</h4>
+                                <div class="grid grid-cols-1 gap-2 mt-2">
+                                    <template
+                                        x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))"
+                                        :key="pf._id">
+                                        <a :href="`#/plant-profile/${pf._id}`" class="flex items-center gap-2">
+                                            <img :src="$store.ui.resolveImage(pf.profile_pic || pf.image_url || pf.image)"
+                                                class="w-12 h-12 object-cover rounded" />
+                                            <div class="text-sm" x-text="pf.nickname"></div>
+                                        </a>
+                                    </template>
+                                    <div x-show="($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id))).length === 0"
+                                        class="text-sm text-gray-500">
+                                        No tienes perfiles de plantas. <a href="#/plant-profiles"
+                                            class="text-blue-600 underline">Crear uno</a>
                                     </div>
-                                </form>
-                            </template>
-                            <template x-if="!$store.auth.token">
-                                <div class="p-4 bg-yellow-50 rounded border border-yellow-100 text-sm">Debes iniciar sesión para crear especies.</div>
-                            </template>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                <template x-if="!$store.auth.token">
+                    <div class="bg-white p-6 rounded shadow text-center">
+                        <div class="text-lg font-medium">Debes iniciar sesión para ver tu perfil.</div>
+                        <div class="mt-3">
+                            <a href="#/login" class="bg-blue-600 text-white px-4 py-2 rounded">Iniciar sesión</a>
+                            <a href="#/signup" class="ml-3 text-blue-600 underline">Crear cuenta</a>
                         </div>
-                        <div class="flex gap-2">
-                            <input x-model="q" type="search" placeholder="Buscar especies" class="flex-1 border rounded px-3 py-2" />
-                            <button class="bg-green-500 text-white px-4 py-2 rounded" x-on:click="$store.species.search(q)">Buscar</button>
-                        </div>
-                        <div class="mt-4 grid grid-cols-1 gap-2">
-                            <template x-for="s in $store.species.items" :key="s._id">
-                                <div class="p-3 border rounded flex items-center justify-between">
-                                    <div>
+                    </div>
+                </template>
+            </section>
+
+            <!-- Explore / Species Search -->
+            <section x-show="$store.ui.route === 'explore'" x-data="{ q: '', showCreateSpecies: false }"
+                class="space-y-4">
+                <h2 class="text-xl font-semibold">Explorar Especies</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <div class="md:grid md:grid-cols-3 md:gap-6">
+                        <div class="md:col-span-2">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex items-center gap-2">
+                                    <input x-model="q" type="search" placeholder="Buscar especies"
+                                        class="border rounded px-3 py-2 mr-2" />
+                                    <button class="bg-green-500 text-white px-4 py-2 rounded"
+                                        x-on:click="$store.species.search(q)">Buscar</button>
+                                </div>
+                            </div>
+
+                            <div x-show="showCreateSpecies" class="mb-4">
+                                <template>
+                                    <form x-on:submit.prevent="$store.species.create()" class="space-y-3">
+                                        <input x-model.trim="$store.species.form.common_name" placeholder="Nombre común"
+                                            class="w-full border rounded px-3 py-2" />
+                                        <input x-model.trim="$store.species.form.scientific_name"
+                                            placeholder="Nombre científico (requerido)" required
+                                            class="w-full border rounded px-3 py-2" />
+                                        <input x-model.trim="$store.species.form.family" placeholder="Familia"
+                                            class="w-full border rounded px-3 py-2" />
+                                        <input x-model.trim="$store.species.form.tags"
+                                            placeholder="Etiquetas (separadas por comas)"
+                                            class="w-full border rounded px-3 py-2" />
+                                        <div class="flex justify-end">
+                                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear
+                                                especie</button>
+                                        </div>
+                                    </form>
+                                </template>
+                                <template x-if="!$store.auth.token">
+                                    <div class="p-4 bg-yellow-50 rounded border border-yellow-100 text-sm">Debes iniciar
+                                        sesión para crear especies.</div>
+                                </template>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                <template x-for="s in $store.species.items" :key="s._id">
+                                    <div class="p-3 border rounded">
                                         <div class="font-semibold" x-text="s.common_name"></div>
                                         <div class="text-sm text-gray-500" x-text="s.scientific_name"></div>
-                                    </div>
-                                    <a :href="`#/species/${s._id}`" class="text-blue-500">Ver</a>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Plant Profiles -->
-                <section x-show="$store.ui.route === 'plant-profiles'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Perfiles de plantas</h2>
-                    <div class="bg-white p-4 rounded shadow">
-                        <div class="flex justify-between items-center mb-3">
-                            <div class="font-medium">Perfiles</div>
-                            <button class="bg-green-500 text-white px-3 py-1 rounded" x-on:click="$store.plantProfiles.showCreate = !$store.plantProfiles.showCreate">Nuevo perfil</button>
-                        </div>
-
-                        <div x-show="$store.plantProfiles.showCreate" class="mb-4">
-                            <template x-if="$store.auth.user">
-                                <form x-on:submit.prevent="$store.plantProfiles.create()" class="space-y-3">
-                                    <input x-model.trim="$store.plantProfiles.form.nickname" placeholder="Nombre de la planta (apodo)" required class="w-full border rounded px-3 py-2" />
-                                    <label class="text-sm text-gray-600">Especie</label>
-                                    <select x-model="$store.plantProfiles.form.species_id" class="w-full border rounded px-3 py-2" required>
-                                        <option value="">Seleccionar especie</option>
-                                        <template x-for="s in $store.species.items" :key="s._id">
-                                            <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
-                                        </template>
-                                    </select>
-                                    <textarea x-model="$store.plantProfiles.form.notes" placeholder="Notas" class="w-full border rounded px-3 py-2"></textarea>
-                                    <input x-on:change="$store.plantProfiles.handleFile($event)" type="file" accept="image/*" />
-                                    <div class="flex justify-end">
-                                        <button :disabled="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === ''" :class="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === '' ? 'opacity-50 cursor-not-allowed' : ''" class="bg-blue-500 text-white px-4 py-2 rounded">Crear</button>
-                                    </div>
-                                </form>
-                            </template>
-                            <template x-if="!$store.auth.user">
-                                <div class="p-4 bg-yellow-50 rounded border border-yellow-100 text-sm">
-                                    Debes <a href="#/login" class="text-blue-600 underline">iniciar sesión</a> para crear un perfil de planta.
-                                </div>
-                            </template>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-3">
-                            <template x-for="p in $store.plantProfiles.items" :key="p._id">
-                                <div class="p-3 border rounded flex items-center justify-between">
-                                    <a :href="`#/plant-profile/${p._id}`" class="flex items-center gap-3">
-                                        <img :src="$store.ui.resolveImage(p.profile_pic || p.image_url || p.image)" class="w-14 h-14 object-cover rounded" />
-                                        <div>
-                                            <div class="font-semibold" x-text="p.nickname || p.name || ''"></div>
-                                            <div class="text-sm text-gray-500" x-text="p.species || ''"></div>
+                                        <div class="mt-2 text-xs text-gray-500">Family: <span x-text="s.family || '-'"
+                                                class="font-medium"></span></div>
+                                        <div class="mt-3 flex justify-end">
+                                            <a :href="`#/species/${s._id}`" class="text-blue-500">Ver</a>
                                         </div>
-                                    </a>
-                                    <div class="flex items-center gap-2">
-                                        <a :href="`#/plant-profile/${p._id}`" class="text-blue-500">Ver</a>
-                                        <button x-show="$store.auth.user && (p.user_id && (p.user_id._id ? p.user_id._id : p.user_id) === $store.auth.user._id)" class="text-red-500" x-on:click="$store.plantProfiles.remove(p._id)">Eliminar</button>
                                     </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <aside class="md:col-span-1">
+                            <div class="mb-4">
+                                <template>
+                                    <button class="w-full bg-green-500 text-white px-3 py-2 rounded"
+                                        x-on:click="showCreateSpecies = !showCreateSpecies">Nueva especie</button>
+                                </template>
+                                <template x-if="!$store.auth.token">
+                                    <div class="p-3 bg-yellow-50 rounded text-sm">Inicia sesión para crear especies.
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="p-3 border rounded text-sm text-gray-600">
+                                <div class="font-medium mb-2">Consejos</div>
+                                Usa el buscador para filtrar por nombre común o científico.
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Plant Profiles -->
+            <section x-show="$store.ui.route === 'plant-profiles'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Perfiles de plantas</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <div class="md:grid md:grid-cols-3 md:gap-6">
+                        <div class="md:col-span-2">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="font-medium">Perfiles</div>
+                                <button class="bg-green-500 text-white px-3 py-1 rounded"
+                                    x-on:click="$store.plantProfiles.showCreate = !$store.plantProfiles.showCreate">Nuevo
+                                    perfil</button>
+                            </div>
+
+                            <div x-show="$store.plantProfiles.showCreate" class="mb-4">
+                                <template x-if="$store.auth.user">
+                                    <form x-on:submit.prevent="$store.plantProfiles.create()" class="space-y-3">
+                                        <input x-model.trim="$store.plantProfiles.form.nickname"
+                                            placeholder="Nombre de la planta (apodo)" required
+                                            class="w-full border rounded px-3 py-2" />
+                                        <label class="text-sm text-gray-600">Especie</label>
+                                        <select x-model="$store.plantProfiles.form.species_id"
+                                            class="w-full border rounded px-3 py-2" required>
+                                            <option value="">Seleccionar especie</option>
+                                            <template x-for="s in $store.species.items" :key="s._id">
+                                                <option :value="s._id" x-text="s.common_name || s.scientific_name">
+                                                </option>
+                                            </template>
+                                        </select>
+                                        <textarea x-model="$store.plantProfiles.form.notes" placeholder="Notas"
+                                            class="w-full border rounded px-3 py-2"></textarea>
+                                        <input x-on:change="$store.plantProfiles.handleFile($event)" type="file"
+                                            accept="image/*" />
+                                        <div class="flex justify-end">
+                                            <button
+                                                :disabled="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === ''"
+                                                :class="$store.plantProfiles.form.nickname.trim() === '' || $store.plantProfiles.form.species_id.trim() === '' ? 'opacity-50 cursor-not-allowed' : ''"
+                                                class="bg-blue-500 text-white px-4 py-2 rounded">Crear</button>
+                                        </div>
+                                    </form>
+                                </template>
+                                <template x-if="!$store.auth.user">
+                                    <div class="p-4 bg-yellow-50 rounded border border-yellow-100 text-sm">
+                                        Debes <a href="#/login" class="text-blue-600 underline">iniciar sesión</a> para
+                                        crear un perfil de planta.
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <template x-for="p in $store.plantProfiles.items" :key="p._id">
+                                    <div class="p-3 border rounded">
+                                        <a :href="`#/plant-profile/${p._id}`" class="flex items-center gap-3">
+                                            <img :src="$store.ui.resolveImage(p.profile_pic || p.image_url || p.image)"
+                                                class="w-16 h-16 object-cover rounded" />
+                                            <div>
+                                                <div class="font-semibold" x-text="p.nickname || p.name || ''"></div>
+                                                <div class="text-sm text-gray-500" x-text="p.species || ''"></div>
+                                            </div>
+                                        </a>
+                                        <div class="mt-2 flex justify-end gap-2">
+                                            <a :href="`#/plant-profile/${p._id}`" class="text-blue-500">Ver</a>
+                                            <button
+                                                x-show="$store.auth.user && (p.user_id && (p.user_id._id ? p.user_id._id : p.user_id) === $store.auth.user._id)"
+                                                class="text-red-500"
+                                                x-on:click="$store.plantProfiles.remove(p._id)">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <aside class="md:col-span-1">
+                            <div class="p-3 border rounded mb-3">
+                                <div class="font-medium">Atajos</div>
+                                <div class="text-sm text-gray-600 mt-2">Usa "Nuevo perfil" para añadir rápido. Filtra
+                                    por especie desde explorar.</div>
+                            </div>
+                            <div class="p-3 border rounded text-sm text-gray-600">
+                                <div class="font-medium">Cuenta</div>
+                                <div class="mt-2">Perfiles: <span x-text="$store.plantProfiles.items.length"></span>
                                 </div>
-                            </template>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Plant Profile Detail -->
+            <section x-show="$store.ui.route === 'plant-profile'" class="space-y-4">
+                <template x-if="$store.plantProfiles.current">
+                    <div class="bg-white p-4 rounded shadow">
+                        <div class="flex items-start gap-4">
+                            <img :src="$store.ui.resolveImage($store.plantProfiles.current.profile_pic || $store.plantProfiles.current.image_url || $store.plantProfiles.current.image)"
+                                class="w-32 h-32 object-cover rounded" />
+                            <div>
+                                <h3 class="text-2xl font-bold"
+                                    x-text="$store.plantProfiles.current.nickname || $store.plantProfiles.current.name">
+                                </h3>
+                                <div class="text-sm text-gray-500" x-text="$store.plantProfiles.current.species || ''">
+                                </div>
+                                <p class="mt-3" x-text="$store.plantProfiles.current.notes"></p>
+                            </div>
                         </div>
                     </div>
-                </section>
+                </template>
+            </section>
 
-                <!-- Plant Profile Detail -->
-                <section x-show="$store.ui.route === 'plant-profile'" class="space-y-4">
-                    <template x-if="$store.plantProfiles.current">
-                        <div class="bg-white p-4 rounded shadow">
-                                <div class="flex items-start gap-4">
-                                <img :src="$store.ui.resolveImage($store.plantProfiles.current.profile_pic || $store.plantProfiles.current.image_url || $store.plantProfiles.current.image)" class="w-32 h-32 object-cover rounded" />
-                                <div>
-                                    <h3 class="text-2xl font-bold" x-text="$store.plantProfiles.current.nickname || $store.plantProfiles.current.name"></h3>
-                                    <div class="text-sm text-gray-500" x-text="$store.plantProfiles.current.species || ''"></div>
-                                    <p class="mt-3" x-text="$store.plantProfiles.current.notes"></p>
+            <!-- Saves Screen -->
+            <section x-show="$store.ui.route === 'saves'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Publicaciones guardadas</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <template x-for="s in $store.saves.items" :key="s._id">
+                        <div class="flex items-center gap-4 border-b py-2">
+                            <img :src="$store.ui.resolveImage(s.post_id?.image_url || s.post?.image_url)"
+                                class="w-20 h-20 object-cover rounded" />
+                            <div class="flex-1">
+                                <div class="text-sm text-gray-500"
+                                    x-text="s.post_id?.user_id?.username || s.post?.user_id?.username"></div>
+                            </div>
+                            <button class="text-red-500"
+                                x-on:click="$store.saves.toggleSave(s.post_id?._id || s.post?._id)">Eliminar</button>
+                        </div>
+                    </template>
+                    <div x-show="$store.saves.items.length === 0" class="text-sm text-gray-500">No hay publicaciones
+                        guardadas.</div>
+                </div>
+            </section>
+
+            <!-- Notifications Screen -->
+            <section x-show="$store.ui.route === 'notifications'" class="space-y-4">
+                <h2 class="text-xl font-semibold">Notificaciones</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <template x-for="n in $store.notifications.items" :key="n._id">
+                        <div class="flex items-start justify-between border-b py-2">
+                            <div>
+                                <div class="text-sm" x-text="n.text || n.message || n.type"></div>
+                                <div class="text-xs text-gray-400" x-text="new Date(n.created_at).toLocaleString()">
                                 </div>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <button class="text-sm text-blue-600"
+                                    x-on:click="$store.notifications.markRead(n._id)">Marcar como leído</button>
+                                <button class="text-sm text-red-500 mt-1"
+                                    x-on:click="$store.notifications.remove(n._id)">Eliminar</button>
                             </div>
                         </div>
                     </template>
-                </section>
-
-                <!-- Saves Screen -->
-                <section x-show="$store.ui.route === 'saves'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Publicaciones guardadas</h2>
-                    <div class="bg-white p-4 rounded shadow">
-                        <template x-for="s in $store.saves.items" :key="s._id">
-                            <div class="flex items-center gap-4 border-b py-2">
-                                <img :src="$store.ui.resolveImage(s.post_id?.image_url || s.post?.image_url)" class="w-20 h-20 object-cover rounded" />
-                                <div class="flex-1">
-                                    <div class="text-sm text-gray-500" x-text="s.post_id?.user_id?.username || s.post?.user_id?.username"></div>
-                                </div>
-                                <button class="text-red-500" x-on:click="$store.saves.toggleSave(s.post_id?._id || s.post?._id)">Eliminar</button>
-                            </div>
-                        </template>
-                        <div x-show="$store.saves.items.length === 0" class="text-sm text-gray-500">No hay publicaciones guardadas.</div>
-                    </div>
-                </section>
-
-                <!-- Notifications Screen -->
-                <section x-show="$store.ui.route === 'notifications'" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Notificaciones</h2>
-                    <div class="bg-white p-4 rounded shadow">
-                        <template x-for="n in $store.notifications.items" :key="n._id">
-                            <div class="flex items-start justify-between border-b py-2">
-                                <div>
-                                    <div class="text-sm" x-text="n.text || n.message || n.type"></div>
-                                    <div class="text-xs text-gray-400" x-text="new Date(n.created_at).toLocaleString()"></div>
-                                </div>
-                                <div class="flex flex-col items-end">
-                                    <button class="text-sm text-blue-600" x-on:click="$store.notifications.markRead(n._id)">Marcar como leído</button>
-                                    <button class="text-sm text-red-500 mt-1" x-on:click="$store.notifications.remove(n._id)">Eliminar</button>
-                                </div>
-                            </div>
-                        </template>
-                        <div x-show="$store.notifications.items.length === 0" class="text-sm text-gray-500">No hay notificaciones.</div>
-                    </div>
-                </section>
-
-                <!-- Settings Screen -->
-                <section x-show="$store.ui.route === 'settings'" x-data="{ full_name: $store.auth.user?.full_name || '', bio: $store.auth.user?.bio || '', file: null, preview: null }" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Configuración</h2>
-                    <div class="bg-white p-4 rounded shadow">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                            <div class="flex flex-col items-center md:items-start gap-3">
-                                <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-                                    <img x-show="preview || $store.auth.user?.profile_pic" :src="preview ? preview : $store.ui.resolveImage($store.auth.user?.profile_pic)" class="w-full h-full object-cover" />
-                                    <template x-if="!(preview || $store.auth.user?.profile_pic)">
-                                        <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                    </template>
-                                </div>
-                                <div class="text-center md:text-left">
-                                    <div class="font-semibold" x-text="$store.auth.user?.username"></div>
-                                    <div class="text-sm text-gray-500" x-text="$store.auth.user?.email"></div>
-                                </div>
-                                <label class="text-xs text-gray-500">Cambiar avatar (max 2MB)</label>
-                                <input type="file" x-on:change="file = $event.target.files[0]; preview = file ? URL.createObjectURL(file) : null" accept="image/*" class="text-sm" />
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <form x-on:submit.prevent="$store.auth.updateProfile({ full_name, bio }, file)" class="space-y-4">
-                                    <div>
-                                        <label class="text-sm font-medium">Nombre completo</label>
-                                        <input x-model="full_name" placeholder="Nombre completo" class="w-full border rounded px-3 py-2 mt-1" />
-                                    </div>
-
-                                    <div>
-                                        <label class="text-sm font-medium">Bio</label>
-                                        <textarea x-model="bio" placeholder="Cuéntanos sobre ti" class="w-full border rounded px-3 py-2 mt-1" rows="4"></textarea>
-                                    </div>
-
-                                    <div class="flex items-center justify-end">
-                                        <button type="button" class="mr-2 px-4 py-2 rounded border" x-on:click="file = null; preview = null">Cancelar</button>
-                                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <footer class="bg-gray-900 text-white py-6">
-                <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <div class="font-semibold">Plantgram</div>
-                            <div class="text-xs text-gray-400">© 2025 Plantgram. Todos los derechos reservados.</div>
-                        </div>
-                    </div>
-                    <div class="text-xs text-gray-400">Hecho con ♥ para amantes de las plantas</div>
+                    <div x-show="$store.notifications.items.length === 0" class="text-sm text-gray-500">No hay
+                        notificaciones.</div>
                 </div>
-            </footer>
-        </div>
-    </body>
+            </section>
 
-    </html>
+            <!-- Settings Screen -->
+            <section x-show="$store.ui.route === 'settings'"
+                x-data="{ full_name: $store.auth.user?.full_name || '', bio: $store.auth.user?.bio || '', file: null, preview: null }"
+                class="space-y-4">
+                <h2 class="text-xl font-semibold">Configuración</h2>
+                <div class="bg-white p-4 rounded shadow">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                        <div class="flex flex-col items-center md:items-start gap-3">
+                            <div
+                                class="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                                <img x-show="preview || $store.auth.user?.profile_pic"
+                                    :src="preview ? preview : $store.ui.resolveImage($store.auth.user?.profile_pic)"
+                                    class="w-full h-full object-cover" />
+                                <template x-if="!(preview || $store.auth.user?.profile_pic)">
+                                    <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                    </svg>
+                                </template>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <div class="font-semibold" x-text="$store.auth.user?.username"></div>
+                                <div class="text-sm text-gray-500" x-text="$store.auth.user?.email"></div>
+                            </div>
+                            <label class="text-xs text-gray-500">Cambiar avatar (max 2MB)</label>
+                            <input type="file"
+                                x-on:change="file = $event.target.files[0]; preview = file ? URL.createObjectURL(file) : null"
+                                accept="image/*" class="text-sm" />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <form x-on:submit.prevent="$store.auth.updateProfile({ full_name, bio }, file)"
+                                class="space-y-4">
+                                <div>
+                                    <label class="text-sm font-medium">Nombre completo</label>
+                                    <input x-model="full_name" placeholder="Nombre completo"
+                                        class="w-full border rounded px-3 py-2 mt-1" />
+                                </div>
+
+                                <div>
+                                    <label class="text-sm font-medium">Bio</label>
+                                    <textarea x-model="bio" placeholder="Cuéntanos sobre ti"
+                                        class="w-full border rounded px-3 py-2 mt-1" rows="4"></textarea>
+                                </div>
+
+                                <div class="flex items-center justify-end">
+                                    <button type="button" class="mr-2 px-4 py-2 rounded border"
+                                        x-on:click="file = null; preview = null">Cancelar</button>
+                                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar
+                                        cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-900 text-white py-6">
+            <div class="max-w-screen-xl mx-auto px-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div>
+                        <div class="font-semibold">Plantgram</div>
+                        <div class="text-xs text-gray-400">© 2025 Plantgram. Todos los derechos reservados.</div>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-400">Hecho con ♥ para amantes de las plantas</div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
