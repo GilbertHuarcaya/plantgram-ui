@@ -79,7 +79,7 @@ document.addEventListener('alpine:init', () => {
                         }, 100);
                     }
                 }
-                if (this.route === 'create') {
+                if (this.route === 'create-post') {
                     // load user's plant profiles so they can be associated to a post
                     const ppStore = Alpine.store('plantProfiles');
                     if (ppStore && typeof ppStore.load === 'function') {
