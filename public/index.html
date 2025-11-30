@@ -35,11 +35,23 @@
 </head>
 
     <body class="bg-gray-50 text-gray-800">
-        <div x-data x-init="$nextTick(() => { $store.ui.init(); $store.auth.verify(); })" class="min-h-screen">
-            <header class="bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 shadow">
+        <div x-data x-init="$nextTick(() => { $store.ui.init(); $store.auth.verify(); })" class="min-h-screen flex flex-col">
+            <header x-data="{ open: false }" class="relative bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 shadow">
                 <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-                    <h1 class="text-2xl"><span class="brand-title">Plantgram</span></h1>
-                    <nav class="space-x-4 flex items-center">
+                    <div class="flex items-center gap-4">
+                        <button class="md:hidden text-white p-2 rounded-md focus:outline-none" x-on:click="open = !open" aria-label="Toggle menu">
+                            <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <h1 class="text-2xl"><span class="brand-title">Plantgram</span></h1>
+                    </div>
+
+                    <!-- Desktop nav -->
+                    <nav class="hidden md:flex space-x-4 items-center">
                         <a href="#/feed" class="text-sm text-white nav-link hover:underline transition-transform">Inicio</a>
                         <a x-show="$store.auth.token" href="#/create-post" class="text-sm text-white bg-white/20 px-3 py-1 rounded nav-link hover:bg-white/30 transition">Nueva publicación</a>
                         <a href="#/explore" class="text-sm text-white nav-link hover:underline transition-transform">Explorar</a>
@@ -50,10 +62,25 @@
                         <a x-show="!$store.auth.token" href="#/login" class="text-sm text-white font-semibold nav-link hover:underline transition-transform">Iniciar sesión</a>
                         <button x-show="$store.auth.token" x-on:click="$store.auth.logout()" class="text-sm text-white ml-2 bg-red-500/90 px-3 py-1 rounded hover:bg-red-600 transition">Cerrar sesión</button>
                     </nav>
+
+                    <!-- Mobile menu (absolute dropdown positioned under header) -->
+                    <div x-cloak x-show="open" x-transition class="md:hidden absolute left-0 right-0 top-full bg-gradient-to-b from-purple-500 via-blue-500 to-green-400 shadow-lg z-40">
+                        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col gap-2">
+                            <a href="#/feed" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Inicio</a>
+                            <a x-show="$store.auth.token" href="#/create-post" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Nueva publicación</a>
+                            <a href="#/explore" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Explorar</a>
+                            <a href="#/plant-profiles" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Perfiles de Plantas</a>
+                            <a href="#/profile" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Mi Perfil</a>
+                            <a href="#/settings" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Configuración</a>
+                            <a x-show="!$store.auth.token" href="#/signup" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Registrarse</a>
+                            <a x-show="!$store.auth.token" href="#/login" class="text-white py-2 border-b border-white/10" x-on:click="open = false">Iniciar sesión</a>
+                            <button x-show="$store.auth.token" x-on:click="$store.auth.logout(); open = false" class="text-white py-2 text-left">Cerrar sesión</button>
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            <main class="max-w-4xl mx-auto px-4 py-6">
+            <main class="max-w-4xl mx-auto px-4 py-6 flex-1">
                 <!-- Login Screen -->
                 <section x-show="$store.ui.route === 'login'" class="space-y-4">
                     <h2 class="text-xl font-semibold">Iniciar sesión</h2>
