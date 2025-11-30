@@ -49,6 +49,18 @@ document.addEventListener('alpine:init', () => {
                     return;
                 }
 
+                // support /plant-profile/:id path (show single plant profile detail)
+                if (routeStr.startsWith('plant-profile/')) {
+                    const id = routeStr.split('/')[1];
+                    location.hash = '#/plant-profile/' + id;
+                    // load plant profile detail and switch to plant-profile view
+                    const pp = Alpine.store('plantProfiles');
+                    if (pp && typeof pp.getById === 'function') pp.getById(id);
+                    else setTimeout(() => { const p2 = Alpine.store('plantProfiles'); if (p2 && typeof p2.getById === 'function') p2.getById(id); }, 100);
+                    this.route = 'plant-profile';
+                    return;
+                }
+
                 this.route = routeStr.split('?')[0];
                 // safely access auth store/user
                 const authStore = Alpine.store('auth');

@@ -216,6 +216,20 @@
                                 </template>
                             </div>
                         </div>
+                        <div class="mt-6">
+                            <h3 class="font-medium">Mis perfiles de plantas</h3>
+                            <div class="grid grid-cols-4 gap-2 mt-2">
+                                <template x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))" :key="pf._id">
+                                    <a :href="`#/plant-profile/${pf._id}`" class="block text-center">
+                                        <img :src="$store.ui.resolveImage(pf.profile_pic || pf.image_url || pf.image)" class="w-full h-24 object-cover rounded" />
+                                        <div class="text-sm mt-1" x-text="pf.nickname"></div>
+                                    </a>
+                                </template>
+                                <div x-show="($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id))).length === 0" class="text-sm text-gray-500">
+                                    No tienes perfiles de plantas. <a href="#/plant-profiles" class="text-blue-600 underline">Crear uno</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
