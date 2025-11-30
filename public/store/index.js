@@ -260,7 +260,7 @@ document.addEventListener('alpine:init', () => {
         items: [],
         creating: false,
         loading: false,
-        createForm: { caption: '', file: null, title: '', description: '', plant_profile_id: '', species_id: '', tags: '' },
+        createForm: { file: null, title: '', description: '', plant_profile_id: '', species_id: '', tags: '' },
         current: null,
         async load(page = 0, limit = 20, append = false) {
             try {
@@ -330,8 +330,6 @@ document.addEventListener('alpine:init', () => {
                     plant_profile_id: this.createForm.plant_profile_id,
                     species_id: this.createForm.species_id || null,
                     tags: tagsArr,
-                    // preserve older caption field for compatibility
-                    caption: this.createForm.caption
                 };
                 const res = await fetch(API_URL + '/api/posts', {
                     method: 'POST',
@@ -346,7 +344,7 @@ document.addEventListener('alpine:init', () => {
                     data._saved = false;
                 }
                 this.items.unshift(data);
-                this.createForm = { caption: '', file: null, title: '', description: '', plant_profile_id: '', species_id: '', tags: '' };
+                this.createForm = { file: null, title: '', description: '', plant_profile_id: '', species_id: '', tags: '' };
                 alert('Post creado');
                 Alpine.store('ui').route = 'feed';
             } catch (err) {
