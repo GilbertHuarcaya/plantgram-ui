@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plantgram — Red social de plantas</title>
+    <title>Plantgram - Red social de plantas</title>
     <script>window.PLANTGRAM_API_URL = window.PLANTGRAM_API_URL || 'http://localhost:3000'</script>
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -141,14 +141,14 @@
                             <textarea x-model="$store.posts.createForm.description" placeholder="Descripción" class="w-full border rounded px-3 py-2"></textarea>
                             <label class="text-sm text-gray-600">Asociar perfil de planta (opcional)</label>
                             <select x-model="$store.posts.createForm.plant_profile_id" class="w-full border rounded px-3 py-2">
-                                <option value="">-- none --</option>
+                                <option value="">Ninguno</option>
                                 <template x-for="pf in ($store.plantProfiles.items || []).filter(p => (p.user_id && (p.user_id._id || p.user_id) == ($store.auth.user && $store.auth.user._id)))" :key="pf._id">
-                                    <option :value="pf._id" x-text="pf.nickname + ' — ' + (pf.species || '')"></option>
+                                    <option :value="pf._id" x-text="pf.nickname + ' - Especie: ' + (pf.species || '')"></option>
                                 </template>
                             </select>
                             <label class="text-sm text-gray-600">Asociar especie (opcional)</label>
                             <select x-model="$store.posts.createForm.species_id" class="w-full border rounded px-3 py-2">
-                                <option value="">-- none --</option>
+                                <option value="">Ninguno</option>
                                 <template x-for="s in $store.species.items" :key="s._id">
                                     <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
                                 </template>
@@ -212,10 +212,36 @@
                             <h3 class="font-medium">Posts</h3>
                             <div class="grid grid-cols-3 gap-2 mt-2">
                                 <template x-for="p in $store.profile.posts" :key="p._id">
-                                    <a :href="`#/posts/${p._id}`">
-                                        <img :src="$store.ui.resolveImage(p.image_url)" class="w-full h-24 object-cover rounded" />
-                                    </a>
+                                    <div>
+                                        <a :href="`#/posts/${p._id}`" class="block">
+                                            <img :src="$store.ui.resolveImage(p.image_url)" class="w-full h-24 object-cover rounded" />
+                                        </a>
+                                        <div class="flex items-center justify-between text-xs text-gray-600 mt-1">
+                                            <div class="flex items-center gap-2">
+                                                <span>👍 <span x-text="p.likes_count || 0"></span></span>
+                                                <span>💬 <span x-text="p.comments_count || 0"></span></span>
+                                                <span>🔖 <span x-text="p.saves_count || 0"></span></span>
+                                            </div>
+                                            <a :href="`#/posts/${p._id}`" class="text-blue-500">Ver</a>
+                                        </div>
+                                    </div>
                                 </template>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <h3 class="font-medium">Mis guardados</h3>
+                            <div class="bg-white mt-2">
+                                <template x-if="$store.saves.items && $store.saves.items.length > 0">
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <template x-for="s in $store.saves.items" :key="s._id">
+                                            <a :href="`#/posts/${(s.post_id && (s.post_id._id || s.post_id)) || (s.post && s.post._id)}`" class="block">
+                                                <img :src="$store.ui.resolveImage((s.post_id && (s.post_id.image_url || s.post_id.image)) || (s.post && (s.post.image_url || s.post.image)))" class="w-full h-24 object-cover rounded" />
+                                            </a>
+                                        </template>
+                                    </div>
+                                </template>
+                                <div x-show="!($store.saves.items && $store.saves.items.length > 0)" class="text-sm text-gray-500 p-3">No tienes guardados.</div>
                             </div>
                         </div>
                         <div class="mt-6">
@@ -237,7 +263,7 @@
 
                 <!-- Explore / Species Search -->
                 <section x-show="$store.ui.route === 'explore'" x-data="{ q: '', showCreateSpecies: false }" class="space-y-4">
-                    <h2 class="text-xl font-semibold">Explorar — Especies</h2>
+                    <h2 class="text-xl font-semibold">Explorar Especies</h2>
                     <div class="bg-white p-4 rounded shadow">
                         <div class="flex justify-between items-center mb-3">
                             <div class="text-sm text-gray-600">Buscar y listar especies</div>
@@ -295,7 +321,7 @@
                                     <input x-model.trim="$store.plantProfiles.form.nickname" placeholder="Nombre de la planta (apodo)" required class="w-full border rounded px-3 py-2" />
                                     <label class="text-sm text-gray-600">Especie</label>
                                     <select x-model="$store.plantProfiles.form.species_id" class="w-full border rounded px-3 py-2" required>
-                                        <option value="">-- Seleccionar especie --</option>
+                                        <option value="">Seleccionar especie</option>
                                         <template x-for="s in $store.species.items" :key="s._id">
                                             <option :value="s._id" x-text="s.common_name || s.scientific_name"></option>
                                         </template>

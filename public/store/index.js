@@ -70,10 +70,15 @@ document.addEventListener('alpine:init', () => {
                     const profileStore = Alpine.store('profile');
                     if (profileStore && typeof profileStore.load === 'function') {
                         profileStore.load(user._id);
+                        // also load saved posts for the profile view
+                        const savesStore = Alpine.store('saves');
+                        if (savesStore && typeof savesStore.load === 'function') savesStore.load();
                     } else {
                         setTimeout(() => {
                             const ps = Alpine.store('profile');
                             if (ps && typeof ps.load === 'function') ps.load(user._id);
+                            const sv = Alpine.store('saves');
+                            if (sv && typeof sv.load === 'function') sv.load();
                         }, 100);
                     }
                 }
@@ -467,6 +472,13 @@ document.addEventListener('alpine:init', () => {
                 const data = await res.json();
                 this.posts = (data || []).map(p => {
                     p.image_url = resolveImage(p.image_url || p.image);
+                    // normalize counts and flags if provided by backend
+                    p.likes_count = p.likes_count || 0;
+                    p.comments_count = p.comments_count || 0;
+                    p.saves_count = p.saves_count || 0;
+                    p._liked = !!p.liked_by_user;
+                    p._saved = !!p.saved_by_user;
+                    if (p.user_id && p.user_id.profile_pic) p.user_id.profile_pic = resolveImage(p.user_id.profile_pic);
                     return p;
                 });
             } catch (err) { console.error('profile posts', err); }
