@@ -37,5 +37,3 @@ Notes
 - By default the frontend expects the backend API at `http://localhost:3000`.
 - To change the API base URL, set `window.PLANTGRAM_API_URL` before loading `store/index.js` in `public/index.html`.
 - The project currently loads Alpine.js and Tailwind via CDN in `public/index.html`, but `package.json` includes them as dependencies for local build or future tooling.
-
-No author or AI usage information is included in this README.
