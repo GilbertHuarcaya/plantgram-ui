@@ -167,6 +167,8 @@ document.addEventListener('alpine:init', () => {
         async login(email, password) {
             email = email || this.loginForm.email
             password = password || this.loginForm.password
+
+            email = DOMPurify.sanitize(email)
             try {
                 const res = await fetch(API_URL + '/api/auth/login', {
                     method: 'POST',
@@ -191,6 +193,8 @@ document.addEventListener('alpine:init', () => {
         },
         async signup(payload) {
             payload = payload || this.signupForm
+            payload.username = DOMPurify.sanitize(payload.username)
+            payload.email = DOMPurify.sanitize(payload.email)
             try {
                 const res = await fetch(API_URL + '/api/auth/signup', {
                     method: 'POST',
@@ -350,13 +354,17 @@ document.addEventListener('alpine:init', () => {
                 const uploadData = await uploadRes.json();
                 if (!uploadRes.ok) throw new Error(uploadData.error || 'Upload failed');
                 const imageUrl = uploadData.imageUrl || uploadData.image_url || `/uploads/${uploadData.filename}`;
+                //Sanitizamos con DOMPurify
+                const cleanTitle = DOMPurify.sanitize(this.createForm.title);
+                const cleanDescription = DOMPurify.sanitize(this.createForm.description);
+                const cleanTags = DOMPurify.sanitize(this.createForm.tags);
 
-                const tagsArr = (this.createForm.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+                const tagsArr = (cleanTags || '').split(',').map(t => t.trim()).filter(Boolean);
                 const body = {
                     user_id: Alpine.store('auth').user?._id,
                     image_url: imageUrl,
-                    title: this.createForm.title,
-                    description: this.createForm.description,
+                    title: cleanTitle,
+                    description: cleanDescription,
                     plant_profile_id: this.createForm.plant_profile_id,
                     species_id: this.createForm.species_id || null,
                     tags: tagsArr,
